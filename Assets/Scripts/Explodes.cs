@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Explodes : MonoBehaviour
 {
-    private void OnTriggerEnter(Collider other)
+    public Transform SpawnPosition;
+    void OnCollisionEnter(Collision collision)
     {
-        if (!other.gameObject.CompareTag("ExplodesBomb"))
+        if (!collision.gameObject.CompareTag("ExplodesBomb"))
             return;
-        Destroy(gameObject);
-
+        this.transform.position = SpawnPosition.position;
+        this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+        this.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
         // TODO: Add code to splatter bomb
     }
 }
