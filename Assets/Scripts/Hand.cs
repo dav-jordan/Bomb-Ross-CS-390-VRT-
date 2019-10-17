@@ -6,12 +6,15 @@ using Valve.VR;
 public class Hand : MonoBehaviour
 {
     public SteamVR_Action_Boolean GrabAction = null;
+    public Explodes explodes;
 
     private SteamVR_Behaviour_Pose Pose = null;
     private FixedJoint Joint = null;
 
     private Interactable CurrentInteractable = null;
     private List<Interactable> ContactInteractables = new List<Interactable>();
+
+    private bool holding = false;
 
     void Awake() {
         Pose = GetComponent<SteamVR_Behaviour_Pose>();
@@ -55,7 +58,7 @@ public class Hand : MonoBehaviour
         if (!CurrentInteractable)
             return;
         Rigidbody target = CurrentInteractable.GetComponent<Rigidbody>();
-        target.velocity = Pose.GetVelocity();
+        target.velocity = Pose.GetVelocity() * 2;
         target.angularVelocity = Pose.GetAngularVelocity();
 
         Joint.connectedBody = null;
