@@ -11,16 +11,21 @@ public class Explodes : MonoBehaviour
     {
         if (!collision.gameObject.CompareTag("ExplodesBomb") && !collision.gameObject.CompareTag("Canvas"))
             return;
-        Transform prevPosition = this.transform;
+        Vector3 prevPosition = this.transform.position;
         // Add splatter sprite
         if (splatter != null && collision.gameObject.CompareTag("Canvas"))
         {
-            Instantiate(splatter, prevPosition.position, Quaternion.FromToRotation(Vector3.up, collision.gameObject.transform.rotation.eulerAngles));
+            Instantiate(splatter, prevPosition, collision.gameObject.transform.rotation);
+            this.transform.position = SpawnPosition.position;
+            this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+            this.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
         }
-
-        this.transform.position = SpawnPosition.position;
-        this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
-        this.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
+        else
+        {
+            this.transform.position = SpawnPosition.position;
+            this.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+            this.GetComponent<Rigidbody>().angularVelocity = new Vector3(0, 0, 0);
+        }
 
     }
 
