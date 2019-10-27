@@ -14,7 +14,10 @@ public class Hand : MonoBehaviour
     private Interactable CurrentInteractable = null;
     private List<Interactable> ContactInteractables = new List<Interactable>();
 
-    private bool holding = false;
+    public AudioSource GetCrazy;
+
+    public bool holding = false;
+    public GameObject OtherController;
 
     void Awake() {
         Pose = GetComponent<SteamVR_Behaviour_Pose>();
@@ -51,6 +54,10 @@ public class Hand : MonoBehaviour
         Rigidbody targetBody = CurrentInteractable.GetComponent<Rigidbody>();
         Joint.connectedBody = targetBody;
         CurrentInteractable.ActiveHand = this;
+        holding = true;
+        bool otherHolding = OtherController.GetComponent<Hand>().holding;
+        if (otherHolding)
+            GetCrazy.Play();
     }
 
     // Drop object
@@ -60,10 +67,11 @@ public class Hand : MonoBehaviour
         Rigidbody target = CurrentInteractable.GetComponent<Rigidbody>();
         target.velocity = Pose.GetVelocity() * 2;
         target.angularVelocity = Pose.GetAngularVelocity();
-
+        print(target.velocity);
         Joint.connectedBody = null;
         CurrentInteractable.ActiveHand = null;
         CurrentInteractable = null;
+        holding = false;
     }
 
     private Interactable GetNearestInteractable() {

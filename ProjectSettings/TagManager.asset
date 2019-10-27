@@ -9,6 +9,7 @@ TagManager:
   - Interactable
   - ExplodesBomb
   - Canvas
+  - Table
   layers:
   - Default
   - TransparentFX
